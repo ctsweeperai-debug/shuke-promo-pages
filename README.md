@@ -1,0 +1,23 @@
+# Yungu Promo Pages
+
+Static GitHub Pages site for the Yungu Innovation promo page.
+
+## Structure
+
+- `index.html` - public entry page
+- `assets/` - images referenced by the page
+- `.github/workflows/pages.yml` - GitHub Pages deployment workflow
+
+## Local Preview
+
+Open `index.html` directly in a browser, or run:
+
+```powershell
+python -m http.server 8080
+```
+
+Then visit `http://127.0.0.1:8080`.
+
+## Deploy
+
+Push this repository to GitHub, then enable GitHub Pages with **GitHub Actions** as the source.
