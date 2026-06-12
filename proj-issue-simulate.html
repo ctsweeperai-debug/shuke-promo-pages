@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HIS患者管理模块全流程可视化模拟器</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">HIS 患者管理模块</p>
+        <h1>邮件驱动项目流程模拟器</h1>
+        <p class="topbar-copy">从 9 月产品需求到 11 月验收移交，按时间节点、状态节点和五个负责人角色模拟项目如何被邮件自动推进。</p>
+      </div>
+      <div class="topbar-meta" aria-label="项目周期">
+        <span>2026-09-01</span>
+        <strong>至</strong>
+        <span>2026-11-30</span>
+      </div>
+    </header>
+
+    <section class="control-strip" aria-label="演示控制">
+      <div class="button-group">
+        <button id="prevBtn" type="button" class="icon-button" aria-label="上一步">‹</button>
+        <button id="playBtn" type="button" class="primary-button">播放流程</button>
+        <button id="nextBtn" type="button" class="icon-button" aria-label="下一步">›</button>
+        <button id="resetBtn" type="button" class="text-button">重播</button>
+      </div>
+      <label class="speed-control" for="speedRange">
+        <span>速度</span>
+        <input id="speedRange" type="range" min="0.5" max="3" step="0.5" value="1">
+        <output id="speedLabel" for="speedRange">1x</output>
+      </label>
+      <div class="progress-meter" aria-label="当前模拟进度">
+        <span id="progressLabel">第 1 / 11 阶段</span>
+        <div class="meter-track"><span id="meterFill"></span></div>
+      </div>
+    </section>
+
+    <section class="metrics-grid" aria-label="流程总览">
+      <article class="metric-block">
+        <span class="metric-label">完整里程碑</span>
+        <strong>33</strong>
+        <small>M00-M32 覆盖需求、开发、测试、验收</small>
+      </article>
+      <article class="metric-block">
+        <span class="metric-label">演练邮件</span>
+        <strong>11</strong>
+        <small>每封邮件单独触发一次检查和人工审核</small>
+      </article>
+      <article class="metric-block">
+        <span class="metric-label">闭环状态</span>
+        <strong>8</strong>
+        <small>接收、检查、准入、整改、复检、关闭、升级</small>
+      </article>
+      <article class="metric-block">
+        <span class="metric-label">核心角色</span>
+        <strong>5</strong>
+        <small>总经理、项目经理、产品、开发、测试</small>
+      </article>
+    </section>
+
+    <section class="workspace-grid">
+      <section class="timeline-panel" aria-label="角色泳道时间轴">
+        <div class="panel-heading">
+          <div>
+            <h2>角色泳道与时间节点</h2>
+            <p>节点越靠右，越接近项目结束；亮起的节点表示当前邮件正在驱动的环节。</p>
+          </div>
+          <div class="legend" aria-label="状态图例">
+            <span><i class="legend-dot planned"></i>计划</span>
+            <span><i class="legend-dot active"></i>当前</span>
+            <span><i class="legend-dot complete"></i>已完成</span>
+            <span><i class="legend-dot review"></i>评审</span>
+            <span><i class="legend-dot risk"></i>整改/风险</span>
+          </div>
+        </div>
+        <div class="month-ruler" aria-hidden="true">
+          <span style="left: 0%">9月 需求与原型</span>
+          <span style="left: 35%">10月 技术与开发</span>
+          <span style="left: 69%">11月 测试与验收</span>
+        </div>
+        <div id="swimlanes" class="swimlanes"></div>
+      </section>
+
+      <aside class="detail-panel" aria-label="当前节点详情">
+        <div class="detail-status">
+          <span id="stageBadge">阶段 01</span>
+          <span id="mailTypeBadge">提交邮件</span>
+        </div>
+        <h2 id="stageTitle">产品原型提交审核</h2>
+        <p id="stageSummary" class="detail-summary"></p>
+        <dl class="detail-list">
+          <div>
+            <dt>当前负责人</dt>
+            <dd id="stageOwner"></dd>
+          </div>
+          <div>
+            <dt>要做的动作</dt>
+            <dd id="stageAction"></dd>
+          </div>
+          <div>
+            <dt>输出成果</dt>
+            <dd id="stageOutput"></dd>
+          </div>
+          <div>
+            <dt>状态变化</dt>
+            <dd id="stageState"></dd>
+          </div>
+        </dl>
+        <div class="mail-animation" aria-label="邮件触发轨迹">
+          <span></span>
+          <strong id="mailRoute">产品经理 → 项目经理 → 产品经理 Agent</strong>
+        </div>
+        <section class="skill-box" aria-label="自动触发技能">
+          <h3>自动触发的 Agent Skill</h3>
+          <div id="skillChips" class="chip-list"></div>
+        </section>
+        <section class="gate-box" aria-label="人工审核点">
+          <h3>这个节点你要审核什么</h3>
+          <ul id="gateList"></ul>
+        </section>
+      </aside>
+    </section>
+
+    <section class="insight-grid">
+      <section class="frequency-panel">
+        <div class="panel-heading compact">
+          <h2>节奏与频率</h2>
+          <p>用于说明每个月检查密度和团队会议节奏。</p>
+        </div>
+        <div id="frequencyBars" class="frequency-bars"></div>
+        <div class="cadence-row">
+          <div>
+            <strong>每周一</strong>
+            <span>计划会，项目经理发布本周节点</span>
+          </div>
+          <div>
+            <strong>每周三</strong>
+            <span>风险同步会，处理阻塞和延期风险</span>
+          </div>
+          <div>
+            <strong>每周五</strong>
+            <span>阶段检查会，汇总邮件检查结果</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="state-panel">
+        <div class="panel-heading compact">
+          <h2>邮件闭环状态机</h2>
+          <p>每封邮件都会沿着同一套状态规则推进。</p>
+        </div>
+        <div id="stateMachine" class="state-machine"></div>
+      </section>
+    </section>
+
+    <section class="role-panel" aria-label="五个角色的作用">
+      <div class="panel-heading compact">
+        <h2>五个负责人在流程中的作用</h2>
+        <p>当前节点会自动高亮真正负责判断和推进的人。</p>
+      </div>
+      <div id="roleCards" class="role-cards"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="11封模拟邮件">
+      <div class="panel-heading compact">
+        <h2>11 封邮件分阶段演练</h2>
+        <p>培训时可以按顺序点开，模拟“审核通过后才进入下一阶段”。</p>
+      </div>
+      <div id="stageList" class="stage-list"></div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
